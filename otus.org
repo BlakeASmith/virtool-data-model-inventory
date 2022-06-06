@@ -1,0 +1,34 @@
+#+title: OTUs
+
+* Fields
+
+** At Creation =virtool.otus.data.create=
+
+| key                  | type       | description                                                                                        |
+|----------------------+------------+----------------------------------------------------------------------------------------------------|
+| id                   | str        | the database ID of the OTU                                                                         |
+| name                 | str        | a name for the OTU                                                                                 |
+| abbreviation         | str        | an abbreviated name for the OTU                                                                    |
+| last_indexed_version | str        | the last version of the OTU                                                                        |
+| verified             | bool       | if the OTU is verified, initally set to False                                                      |
+| lower_name           | str        | lower-case version of the OTU name                                                                 |
+| isolates             | list[dict] | isolates for this OTU, initally an empty list. New isolates get added by =POST /otus/:id/isolates= |
+
+*** Attached to API response, but not stored on the OTU document
+
+| key                  | type       | description                                   |
+|----------------------+------------+-----------------------------------------------|
+| most_recent_change   | dict       | the most recent change to this OTU            |
+
+** Isolates
+
+Stored on the OTU document under "isolates"
+
+| key         | type | description                         |
+|-------------+------+-------------------------------------|
+| id          | str  | ID for the isolate                  |
+| default     | bool | this isolate is the default isolate |
+| source_type | str  | the source type                     |
+| source_name | str  | the source name                     |
+
+

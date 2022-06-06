@@ -1,0 +1,15 @@
+#+title: Sequences
+
+* Fields
+
+| key        | type                  | description               |
+|------------+-----------------------+---------------------------|
+| accession  | str                   |                           |
+| definition | str                   |                           |
+| host       | str                   | the host organism         |
+| segment    | str                   |                           |
+| sequence   | str                   | the DNA sequence          |
+| target     | str                   | the target organism       |
+| reference  | dict ={"id": ref_id}= | the associated reference  |
+| isolate_id | str                   | the associated isolate ID |
+| otu_id     | str                   | the associated OTU ID     |
