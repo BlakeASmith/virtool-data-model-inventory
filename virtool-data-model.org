@@ -1,0 +1,44 @@
+#+title: Analysis Data Models
+
+* fields
+
+Required fields will depend on the specific workflow. So fields like =index= and
+=sample= are only initialized when the workflow uses them.
+
+| key          | type                   | description                                                                   | required |
+|--------------+------------------------+-------------------------------------------------------------------------------+----------|
+| id           | str                    | database ID                                                                   | yes      |
+| created_at   | datetime               | creation time                                                                 | yes      |
+| updated_at   | datetime               | most recent update time                                                       | yes      |
+| index        | dict (see below)       | the index record used for the analysis                                        | no       |
+| job          | dict (see below)       | the job record associated with the analysis                                   | yes      |
+| ready        | bool                   | flag indicating that the job has finished running                             | yes      |
+| reference    | dict (see below)       | the reference record used by this analysis                                    | no       |
+| sample       | dict                   | the sample record used by this analysis                                       | no       |
+| subtractions | List[dict] (see below) | a list of subtractions used by this analysis                                  | no       |
+| user         | dict (see below)       | the user who requested this analysis                                          | yes      |
+| workflow     | str                    | the workflow name for this analysis                                           | yes      |
+| files        | List[dict]             | required file records for this analysis, to be downloaded within the workflow | no       |
+| results      | dict                   | the workflow results, the structure will differ between workflows             | no       |
+
+
+** Index
+
+| key     | type | description       | required |
+|---------+------+-------------------+----------|
+| id      | str  | database ID       | yes      |
+| version | str  | the index version | yes      |
+
+
+** Job
+
+| key | type | description | required |
+|-----+------+-------------+----------|
+| id  | str  | database id | yes      |
+
+** Reference
+
+| key  | type | description        | required |
+|------+------+--------------------+----------|
+| id   | str  | database id        | yes      |
+| name | str  | the reference name | no       |

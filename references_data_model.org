@@ -1,0 +1,91 @@
+#+title: References Data Model
+
+* Fields
+
+** Request
+
+Fields sent in the POST request to =/refs= to create a new reference.
+
+| key         | type | description                                  |
+|-------------+------+----------------------------------------------|
+| name        | str  | reference name                               |
+| description | str  | reference description                        |
+| data_type   | str  | reference type, "barcode" or "genome"        |
+| clone_from  | str  | existing reference to clone from             |
+| import_from | str  | existing reference to import from            |
+| remote_from | str  | github remote (virtool/ref-plant-viruses)    |
+| release_id  | str  | the organism type                            |
+| organism    | str  | the ID of the remote reference (remote_from) |
+
+** Base
+
+These fields are present on the reference document at creation time.
+
+| key              | type | description                              |
+|------------------+------+------------------------------------------|
+| manifest         | dict | OTU Manifest                             |
+| name             | str  | reference name                           |
+| description      | str  | reference description                    |
+| organism         | str  | the organism type                        |
+| data_type        | str  | reference type, "barcode" or "genome"    |
+| user_id          | str  | user ID of the client making the request |
+
+** Patched
+
+These fields get added and/or replaced by =PATCH /refs/:id=.
+
+| key                   | type       | description                                           |
+|-----------------------+------------+-------------------------------------------------------|
+| name                  | str        | change the name of a reference                        |
+| description           | str        | change the description                                |
+| organism              | str        | change the organism type                              |
+| internal_control      | str        | set an internal control                               |
+| restrict_source_types | bool       | flag indicating source types to restrict source types |
+| source_types          | list[str]  | a list of allowed source types                        |
+| targets               | list[dict] | set targets for the reference                         |
+
+*** Targets
+
+| key         | type | description                        |
+|-------------+------+------------------------------------|
+| name        | str  | target name                        |
+| description | str  | target description                 |
+| required    | bool | if the target is a required target |
+| length      | int  | length of the target               |
+
+** Computed
+
+These fields get computed based on the values of other fields. They get added to
+the HTTP response, but are not stored onto the reference document in the database.
+
+| key                  | type       | description                                  |
+|----------------------+------------+----------------------------------------------|
+| contributors         | list[dict] | contributors to the reference                |
+| internal_control     | id         | the internal control setting                 |
+| latest_build         | dict       | the latest index build of the reference      |
+| otu_count            | int        | number of OTUs for the reference             |
+| unbuilt_change_count | int        | the number of changes since the latest build |
+| users                | list[user] | users who may access the reference           |
+
+
+*** Contributors
+
+The user information and contribution count for each contributor.
+
+| key           | type | description                       |
+|---------------+------+-----------------------------------|
+| id            | str  | the user ID                       |
+| handle        | str  | the user handle                   |
+| administrator | str  | the administrator ID for the user |
+| count         | int  | the contribution count            |
+
+*** Latest Build
+
+The latest build is a subset of the Index document.
+
+| key        | type     | description                      |
+|------------+----------+----------------------------------|
+| created_at | datetime | timestamp for the build          |
+| version    | str      | the index version                |
+| user       | dict     | the user who initiated the build |
+| has_json   | bool     | JSON present for the build       |

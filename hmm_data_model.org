@@ -1,0 +1,18 @@
+#+title: Hmm_data_model
+
+* Fields
+
+** Individual HMM
+
+| key           | type           |
+|---------------+----------------|
+| cluster       | int            |
+| names         | List[str]      |
+| families      | List[str]      |
+| count         | int            |
+| entries       | List[dict]     |
+| length        | int            |
+| genera        | dict[str, int] |
+| mean_entropy  | float          |
+| total_entropy | float          |
+| hidden        | bool           |
