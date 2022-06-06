@@ -1,0 +1,52 @@
+#+title: Index Data Model
+
+* Fields
+
+** Create Index Request
+
+The index document gets created using the [[https://github.com/virtool/workflow-build-index][Build Index]] workflow on =POST= request to =/refs/:id/indexes=. The request handler expects the following in the request body.
+
+| key    | type | description                                     |
+|--------+------+-------------------------------------------------|
+| ref_id | str  | the reference ID, from which to build the index |
+
+
+** Added at Job Creation
+
+These fields are present at creation time (=virtool.indexes.db.create()=).
+
+| key        | type                  | description                            |
+|------------+-----------------------+----------------------------------------|
+| id         | str                   | the database ID of the index           |
+| version    | str                   | the index version                      |
+| created_at | datetime              | the time of creation                   |
+| manifest   | dict                  | the OTU manifest                       |
+| ready      | bool                  | if the index is ready, initially False |
+| has_files  | bool                  | if the index has associated files      |
+| has_json   | bool                  | if there is a JSON file for the index  |
+| reference  | dict ={"id": ref_id}= | the associated reference               |
+| job        | dict ={"id": job_id}= | the associated job                     |
+| user       | dict                  | the user who created the index         |
+
+** Added at Job Finish
+
+Once the index build completes, the build-index workflow will make a =PATCH= request to =/indexes/:id= and the following fields get set (=virtool.indexes.db.finalize=).
+
+
+| key   | type       | description                                           |
+|-------+------------+-------------------------------------------------------|
+| ready | bool       | the index is ready, set to True                       |
+| files | list[dict] | the index files, uploaded by the build-index workflow |
+
+*** Files
+
+The file dictionaries are of the format:
+
+| key          | type | description                                     |
+|--------------+------+-------------------------------------------------|
+| id           | str  | the file ID in postgres                         |
+| name         | str  | the file name (just the name, not the path)     |
+| index        | str  | the ID of the associated index                  |
+| type         | str  | the filetype (ie. fasta, bowtie2, json)         |
+| size         | str  | the file size                                   |
+| download_url | str  | a URL for the file (=/indexes/:id/files/:name=) |
